@@ -1,0 +1,377 @@
+﻿@model CalendarApp.Models.ViewModel.ItemViewModel<int>
+
+@{
+    ViewBag.Title = "List";
+}
+
+
+
+
+<div id="calendarController" data-ng-controller="$calendarController as calendar">
+    <h2>Calendar App</h2>
+    <h2 class="hidden">{{calendar.headingInfo}}</h2>
+    <div class="row">
+        <div class="col-lg-3">
+            @*<pre>Selected date is: <em>{{calendar | date:'fullDate' }}</em></pre>*@
+
+            <label>myCalendar</label>
+            <div style="display:inline-block; min-height:290px;">
+                <div uib-datepicker ng-model="calendar" class="well well-sm" datepicker-options="options"></div>
+            </div>
+
+            <hr />
+            @*<button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="setDate(2009, 7, 24)">2009-08-24</button>
+                <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>*@
+
+            {{calendar}} <br />{{calendar.date}}
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-1">
+            <form class="calendarForm" data-ng-submit="calendar.sendCalendarItem()">
+                <input type="hidden" name="id" value="@Model.Item" data-ng-model="calendar.date.Id" />
+                <label>Date:</label><br />
+                <div type="text" name="Title" value="" style="width: 100%" data-ng-bind="calendar.date.Date || calendar"></div>
+                <br />
+                <label>Title:</label><br />
+                <input type="text" name="Title" value="" style="width: 100%" data-ng-model="calendar.date.Title" />
+                <br />
+                <label>Location:</label><br />
+                <input type="text" name="Location" value="" style="width: 100%" data-ng-model="calendar.date.Location" />
+                <br />
+                <label>Description:</label><br />
+                <textarea name="Description" value="" style="width: 100%;" rows="10" data-ng-model="calendar.date.Description"></textarea>
+                <br /><br />
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>StartTime:</label><br />
+                        <uib-timepicker data-ng-model="calendar.date.StartTime"
+                                        @*class="ng-class:{'error': calendar.showOfficeHourFormErrors && !calendar.officeHourForm.date.$Valid}"*@
+                                        name="StartTime"
+                                        hour-step="1"
+                                        minute-step="15"
+                                        show-meridian="false"
+                                        data-ng-required="true"
+                                        required>
+                        </uib-timepicker>
+                        @*<div role="alert" class="help-inline error">
+                            <span class="error has-error" ng-show="calendar.showOfficeHourFormErrors && calendar.officeHourForm.startTime.$error.required">Please enter the start time</span>
+                        </div>*@
+                    </div>
+                    <div class="col-lg-6">
+                        <label>EndTime:</label><br />
+                        <uib-timepicker data-ng-model="calendar.date.EndTime"
+                                        @*class="ng-class:{'error': calendar.showOfficeHourFormErrors && !calendar.officeHourForm.date.$Valid}"*@
+                                        name="EndTime"
+                                        hour-step="1"
+                                        minute-step="15"
+                                        show-meridian="false"
+                                        data-ng-required="true"
+                                        required>
+                        </uib-timepicker>
+                        @*<div role="alert" class="help-inline error">
+                            <span class="error has-error" ng-show="calendar.showOfficeHourFormErrors && calendar.officeHourForm.startTime.$error.required">Please enter the end time</span>
+                        </div>*@
+                    </div>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-primary">Send</button>
+                @*<a href="/" class="btn btn-primary" role="button">List</a>*@
+                <br />
+            </form>
+        </div>
+        <div class="col-lg-5">
+            <h3>Schedule for today</h3>
+            <table class="table table-striped table-bordered table-hover table-responsive">
+                <tr>
+
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Description</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                </tr>
+                <tr ng-repeat="time in calendar.date | orderBy : StartTime">
+
+                    <td>{{ time.Title }}</td>
+                    <td>{{ time.Location }}</td>
+                    <td>{{ time.Description }}</td>
+                    <td>{{ time.StartTime }}</td>
+                    <td>{{ time.EndTime }}</td>
+                    <td><button class="btn btn-danger" ng-click="list.deleteGlossaryItem(x)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                    <td><a href="/{{time.Id}}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="~/Scripts/ng/ui-bootstrap-tpls-0.14.2.min.js"></script>
+    <script src="~/Scripts/Example.js"></script>
+    <script src="~/Scripts/nezaci.js"></script>
+    <script src="~/Scripts/nezaci.ng.app.js"></script>
+    <script src="~/Scripts/nezaci.services.calendar.js"></script>
+    <script src="~/Scripts/ng/angular-route.js"></script>
+
+    <script type="text/javascript">
+
+        nezaci.page.startUp = function () {
+
+            nezaci.page.calendarController = nezaci.ng.getControllerInstance($("#calendarController"));
+        }
+
+        nezaci.services.calendarFactory = function ($baseService) {
+            var anezaciServiceObject = nezaci.services.calendar;
+            var newService = $baseService.merge(true, {}, anezaciServiceObject, $baseService);
+            return newService;
+        }
+
+        nezaci.page.calendarControllerFactory = function ($scope, $baseController, $calendarService) {
+
+            var vm = this;
+
+            $baseController.merge(vm, $baseController);
+
+            vm.headingInfo = "Awesome!";
+
+            vm.$calendarService = $calendarService;
+            vm.$scope = $scope;
+
+            vm.date = {};
+
+
+
+            var dateNow = new Date().setHours(0, 0, 0, 0);
+            vm.date.Date = new Date(dateNow);
+            vm.date.Id = @Model.Item;
+
+
+
+
+            vm.notify = vm.$calendarService.getNotifier($scope);
+
+            init();
+
+            function init(){
+                vm.$calendarService.getTodaysCalendarList(vm.date.Date, vm.onReceiveCalendarListSuccess, vm.onReceiveCalendarListError);
+            }
+
+            //vm.onOfficeHoursFormSubmit = _onOfficeHoursFormSubmit;
+
+            
+            //vm.settings = _settings;
+
+            //vm.getOfficeHourSessionForEdit = _getOfficeHourSessionForEdit;
+
+            //vm.onReceiveSectionList = _onReceiveSectionList;
+            //vm.onReceiveSectionListError = _onReceiveSectionListError;
+
+            //vm.onSubmitOfficeHoursFormSuccess = _onSubmitOfficeHoursFormSuccess;
+            //vm.onSubmitOfficeHoursFormError = _onSubmitOfficeHoursFormError;
+
+            //vm.onUpdateOfficeHoursFormSuccess = _onUpdateOfficeHoursFormSuccess;
+            //vm.onUpdateOfficeHoursFormError = _onUpdateOfficeHoursFormError;
+
+            //vm.onGetOfficeHourSessionSuccess = _onGetOfficeHourSessionSuccess;
+            //vm.onGetOfficeHourSessionError = _onGetOfficeHourSessionError;
+
+            //vm.convertTimeDateToDateObject = _convertTimeDateToDateObject;
+
+
+
+            ////vm.officeHour.Topic
+            //vm.showOfficeHourFormErrors = true;
+            //vm.minDate = new Date();
+            //vm.dateOptions = {
+            //    formatYear: 'yy',
+            //    startingDay: 1
+            //};
+            //vm.minTime = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds();
+            //vm.ckeditorOptions = {
+            //    language: 'en',
+            //    allowedContent: true,
+            //    entities: false
+            //}
+            //vm.session = {};
+
+
+            //vm.notify = vm.$calendarService.getNotifier($scope);
+
+            //render();
+
+            //function render() {
+            //    vm.settings();
+            //    vm.$calendarService.getSectionsList(vm.onReceiveSectionList, vm.onReceiveSectionListError);
+            //    vm.getOfficeHourSessionForEdit();
+            //}
+
+            //function _getOfficeHourSessionForEdit() {
+            //    if (angular.element("#id").val() != 0) {
+            //        vm.session.id = angular.element("#id").val();
+            //        vm.$calendarService.getOfficeHourSession(vm.session.id, vm.onGetOfficeHourSessionSuccess, vm.onGetOfficeHourSessionError);
+            //    }
+            //}
+
+            //function _onGetOfficeHourSessionSuccess(data) {
+            //    //this receives the data and calls the special
+            //    //notify method that will trigger ng to refresh UI
+            //    vm.notify(function () {
+            //        vm.session = data.item;
+            //        vm.convertTimeDateToDateObject();
+            //        console.log(vm.session);
+            //    });
+            //}
+
+
+            //function _onGetOfficeHourSessionError(jqXhr, error) {
+            //    console.log(error);
+            //}
+
+
+            //function _onReceiveSectionList(data) {
+            //    //this receives the data and calls the special
+            //    //notify method that will trigger ng to refresh UI
+            //    vm.notify(function () {
+            //        vm.courses = data.items;
+            //        console.log(vm.courses);
+            //    });
+            //}
+
+            //function _onReceiveSectionListError(jqXhr, error) {
+            //    console.log(error);
+            //}
+
+            //function _onOfficeHoursFormSubmit() {
+            //    vm.showOfficeHourFormErrors = true;
+
+
+
+
+            //    function _onUpdateOfficeHoursFormSuccess(data) {
+            //        //this receives the data and calls the special
+            //        //notify method that will trigger ng to refresh UI
+            //        vm.notify(function () {
+            //            vm.convertTimeDateToDateObject();
+            //            console.log(data);
+
+            //        });
+            //    }
+
+            //    function _onUpdateOfficeHoursFormError(jqXhr, error) {
+            //        vm.convertTimeDateToDateObject();
+            //        console.log(error);
+            //    }
+
+            //    function _settings() {
+            //        vm.startStatus = {
+            //            opened: false
+            //        };
+
+            //        vm.showOfficeHourFormErrors = false;
+            //        vm.timeZones = [{ id: 1, tZone: 'Atlantic Standard Time (AST)' }, { id: 2, tZone: 'Eastern Standard Time (EST)' }, { id: 3, tZone: 'Central Standard Time (CST)' }, { id: 4, tZone: 'Mountain Standard Time (MST)' }, { id: 5, tZone: 'Pacific Standard Time (PST)' }, { id: 6, tZone: 'Alaskan Standard Time (AKST)' }, { id: 7, tZone: 'Hawaii-Aleutian Standard Time (HST)' }, { id: 8, tZone: 'Samoa Standard Time (UTC-11)' }, { id: 9, tZone: 'Chamorro Standard Time (UTC+10)' }];
+
+            //}
+            //}
+        }
+
+        nezaci.ng.addService(nezaci.ng.app.module
+             , "$calendarService"
+             , ["$baseService"]
+             , nezaci.services.calendarFactory);
+
+        nezaci.ng.addController(nezaci.ng.app.module
+           , "$calendarController"
+           , ['$scope', '$baseController', '$calendarService']
+           , nezaci.page.calendarControllerFactory);
+
+
+    </script>
+}
+
+
+
+@*//    angular.module('ui.bootstrap.demo').controller('DatepickerDemoCtrl', function ($scope) {
+        //        $scope.today = function () {
+        //            $scope.dt = new Date();
+        //        };
+        //        $scope.today();
+
+        //        $scope.clear = function () {
+        //            $scope.dt = null;
+        //        };
+
+        //        $scope.options = {
+        //            customClass: getDayClass,
+        //            minDate: new Date(),
+        //            showWeeks: true
+        //        };
+
+        //        // Disable weekend selection
+        //        function disabled(data) {
+        //            var date = data.date,
+        //              mode = data.mode;
+        //            return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+        //        }
+
+        //        $scope.toggleMin = function () {
+        //            $scope.options.minDate = $scope.options.minDate ? null : new Date();
+        //        };
+
+        //        $scope.toggleMin();
+
+        //        $scope.setDate = function (year, month, day) {
+        //            $scope.dt = new Date(year, month, day);
+        //        };
+
+        //        var tomorrow = new Date();
+        //        tomorrow.setDate(tomorrow.getDate() + 1);
+        //        var afterTomorrow = new Date(tomorrow);
+        //        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        //        $scope.events = [
+        //          {
+        //              date: tomorrow,
+        //              status: 'full'
+        //          },
+        //          {
+        //              date: afterTomorrow,
+        //              status: 'partially'
+        //          }
+        //        ];
+
+        //        function getDayClass(data) {
+        //            var date = data.date,
+        //              mode = data.mode;
+        //            if (mode === 'day') {
+        //                var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+        //                for (var i = 0; i < $scope.events.length; i++) {
+        //                    var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+        //                    if (dayToCheck === currentDay) {
+        //                        return $scope.events[i].status;
+        //                    }
+        //                }
+        //            }
+
+        //            return '';
+        //        }
+        //    });
+
+    }*@
+
+
+

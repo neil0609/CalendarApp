@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link href="~/Scripts/ng/angular-csp.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" data-ng-app="CalendarApp">
+        @RenderBody()
+        <hr />
+        <footer class="nowrap">
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+
+
+
+    @*<script src="~/Scripts/locale/zh-tw.js"></script>
+    <script src="~/Scripts/locale/ar-ma.js"></script>
+    <script src="~/Scripts/locale/ar-sa.js"></script>
+    <script src="~/Scripts/locale/ar-tn.js"></script>
+    <script src="~/Scripts/locale/ar.js"></script>
+    <script src="~/Scripts/locale/bg.js"></script>
+    <script src="~/Scripts/locale/ca.js"></script>
+    <script src="~/Scripts/locale/cs.js"></script>
+    <script src="~/Scripts/locale/da.js"></script>
+    <script src="~/Scripts/locale/de-at.js"></script>
+    <script src="~/Scripts/locale/de.js"></script>
+    <script src="~/Scripts/locale/el.js"></script>
+    <script src="~/Scripts/locale/en-au.js"></script>
+    <script src="~/Scripts/locale/en-ca.js"></script>
+    <script src="~/Scripts/locale/en-gb.js"></script>
+    <script src="~/Scripts/locale/en-ie.js"></script>
+    <script src="~/Scripts/locale/en-nz.js"></script>
+    <script src="~/Scripts/locale/es-do.js"></script>
+    <script src="~/Scripts/locale/es.js"></script>
+    <script src="~/Scripts/locale/eu.js"></script>
+    <script src="~/Scripts/locale/fa.js"></script>
+    <script src="~/Scripts/locale/fi.js"></script>
+    <script src="~/Scripts/locale/fr-ca.js"></script>
+    <script src="~/Scripts/locale/fr-ch.js"></script>
+    <script src="~/Scripts/locale/fr.js"></script>
+    <script src="~/Scripts/locale/gl.js"></script>
+    <script src="~/Scripts/locale/he.js"></script>
+    <script src="~/Scripts/locale/hi.js"></script>
+    <script src="~/Scripts/locale/hr.js"></script>
+    <script src="~/Scripts/locale/hu.js"></script>
+    <script src="~/Scripts/locale/id.js"></script>
+    <script src="~/Scripts/locale/is.js"></script>
+    <script src="~/Scripts/locale/it.js"></script>
+    <script src="~/Scripts/locale/ja.js"></script>
+    <script src="~/Scripts/locale/ko.js"></script>
+    <script src="~/Scripts/locale/lb.js"></script>
+    <script src="~/Scripts/locale/lt.js"></script>
+    <script src="~/Scripts/locale/lv.js"></script>
+    <script src="~/Scripts/locale/mk.js"></script>
+    <script src="~/Scripts/locale/ms-my.js"></script>
+    <script src="~/Scripts/locale/ms.js"></script>
+    <script src="~/Scripts/locale/nb.js"></script>
+    <script src="~/Scripts/locale/nl.js"></script>
+    <script src="~/Scripts/locale/nn.js"></script>
+    <script src="~/Scripts/locale/pl.js"></script>
+    <script src="~/Scripts/locale/pt-br.js"></script>
+    <script src="~/Scripts/locale/pt.js"></script>
+    <script src="~/Scripts/locale/ro.js"></script>
+    <script src="~/Scripts/locale/ru.js"></script>
+    <script src="~/Scripts/locale/sk.js"></script>
+    <script src="~/Scripts/locale/sl.js"></script>
+    <script src="~/Scripts/locale/sr-cyrl.js"></script>
+    <script src="~/Scripts/locale/sr.js"></script>
+    <script src="~/Scripts/locale/sv.js"></script>
+    <script src="~/Scripts/locale/th.js"></script>
+    <script src="~/Scripts/locale/tr.js"></script>
+    <script src="~/Scripts/locale/uk.js"></script>
+    <script src="~/Scripts/locale/vi.js"></script>
+    <script src="~/Scripts/locale/zh-cn.js"></script>
+    <link href="~/Scripts/ng/angular-csp.css" rel="stylesheet" />*@
+    @*<script src="~/Scripts/lib/moment.min.js"></script>
+    <script src="~/Scripts/ng/angular-animate.js"></script>
+    <script src="~/Scripts/ng/angular-animate.min.js"></script>
+    <script src="~/Scripts/ng/angular-aria.js"></script>
+    <script src="~/Scripts/ng/angular-aria.min.js"></script>
+    <script src="~/Scripts/ng/angular-cookies.js"></script>
+    <script src="~/Scripts/ng/angular-cookies.min.js"></script>
+    <script src="~/Scripts/ng/angular-loader.js"></script>
+    <script src="~/Scripts/ng/angular-loader.min.js"></script>
+    <script src="~/Scripts/ng/angular-message-format.js"></script>
+    <script src="~/Scripts/ng/angular-message-format.min.js"></script>
+    <script src="~/Scripts/ng/angular-messages.js"></script>
+    <script src="~/Scripts/ng/angular-messages.min.js"></script>
+    <script src="~/Scripts/ng/angular-mocks.js"></script>
+    <script src="~/Scripts/ng/angular-parse-ext.js"></script>
+    <script src="~/Scripts/ng/angular-parse-ext.min.js"></script>
+    <script src="~/Scripts/ng/angular-resource.js"></script>
+    <script src="~/Scripts/ng/angular-resource.min.js"></script>
+    <script src="~/Scripts/ng/angular-route.js"></script>
+    <script src="~/Scripts/ng/angular-route.min.js"></script>
+    <script src="~/Scripts/ng/angular-sanitize.js"></script>
+    <script src="~/Scripts/ng/angular-sanitize.min.js"></script>
+    <script src="~/Scripts/ng/angular-scenario.js"></script>
+    <script src="~/Scripts/ng/angular-touch.js"></script>
+    <script src="~/Scripts/ng/angular-touch.min.js"></script>
+    <script src="~/Scripts/ng/angular.js"></script>
+    <script src="~/Scripts/ng/angular.min.js"></script>
+    <script src="~/Scripts/ng/ui-bootstrap-tpls-0.14.2.min.js"></script>*@
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
